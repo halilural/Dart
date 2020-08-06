@@ -14,16 +14,19 @@ class MyApp extends StatelessWidget {
       // Uyguylama bazlı temayı yönettiğimiz yer
       theme: ThemeData(
           // primaryColor sadece bir color üzerinden gider, swatch ise o rengin kombinasyonlarını içerir.
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.lightBlue,
           // Floating Button gibi bazı widget'ların renklerinin alternatif olarak ayarlanması için kullanılır.
-          accentColor: Colors.amber,
+          accentColor: Theme.of(context).primaryColorDark,
+          errorColor: Colors.red,
           // pubspec.yaml dosyasındaki font adı ile eşleşir.
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
                   fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
-                  fontSize: 18)),
+                  fontSize: 18),
+              button: TextStyle(color: Colors.white)),
+
           // Ana temadan ziyade, tüm başlıklara font atadık ve size'i 20 yaptık.
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
@@ -59,11 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime txDate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: txDate,
         id: DateTime.now().toString());
 
     setState(() {
@@ -84,6 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void _deleteTransanction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Chart(_recentTransactions),
-            TransactionList(_userTransactions)
+            TransactionList(_userTransactions, _deleteTransanction)
           ],
         ),
       ),
