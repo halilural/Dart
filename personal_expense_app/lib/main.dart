@@ -149,7 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Show Chart'),
+                Text(
+                  'Show Chart',
+                  style: Theme.of(context).textTheme.title,
+                ),
                 // Adaptive, iki platformda da çalışabilen widget'lar için kullanılır.
                 Switch.adaptive(
                   activeColor: Theme.of(context).accentColor,

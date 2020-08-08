@@ -16,27 +16,30 @@ class TransactionList extends StatelessWidget {
       child: transactions.isEmpty
           ? LayoutBuilder(
               builder: (ctx, constraints) {
-                return Column(
-                  children: [
-                    Text(
-                      'No Transactions added yet!',
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    // İki widget arasına space koymak için
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // Image birden fazla kaynaktan gelebilir, network, url, assets, file
-                    // Image'in boyu üzerinde bulunduğu parent boyunu yada genişliğini aştığında hata vereceği için
-                    // Bir container ile onu wrap'larız sonra o parent'a height veririz.
-                    Container(
-                      height: constraints.maxHeight * 0.6,
-                      child: Image.asset(
-                        'assets/images/waiting.png',
-                        fit: BoxFit.cover,
+                return Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      Text(
+                        'No Transactions added yet!',
+                        style: Theme.of(context).textTheme.title,
                       ),
-                    )
-                  ],
+                      // İki widget arasına space koymak için
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Image birden fazla kaynaktan gelebilir, network, url, assets, file
+                      // Image'in boyu üzerinde bulunduğu parent boyunu yada genişliğini aştığında hata vereceği için
+                      // Bir container ile onu wrap'larız sonra o parent'a height veririz.
+                      Container(
+                        height: constraints.maxHeight * 0.6,
+                        child: Image.asset(
+                          'assets/images/waiting.png',
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    ],
+                  ),
                 );
               },
             )
