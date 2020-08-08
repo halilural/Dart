@@ -10,30 +10,35 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Container(
       height: 300,
       child: transactions.isEmpty
-          ? Column(
-              children: [
-                Text(
-                  'No Transactions added yet!',
-                  style: Theme.of(context).textTheme.title,
-                ),
-                // İki widget arasına space koymak için
-                SizedBox(
-                  height: 10,
-                ),
-                // Image birden fazla kaynaktan gelebilir, network, url, assets, file
-                // Image'in boyu üzerinde bulunduğu parent boyunu yada genişliğini aştığında hata vereceği için
-                // Bir container ile onu wrap'larız sonra o parent'a height veririz.
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
+          ? LayoutBuilder(
+              builder: (ctx, constraints) {
+                return Column(
+                  children: [
+                    Text(
+                      'No Transactions added yet!',
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    // İki widget arasına space koymak için
+                    SizedBox(
+                      height: 10,
+                    ),
+                    // Image birden fazla kaynaktan gelebilir, network, url, assets, file
+                    // Image'in boyu üzerinde bulunduğu parent boyunu yada genişliğini aştığında hata vereceği için
+                    // Bir container ile onu wrap'larız sonra o parent'a height veririz.
+                    Container(
+                      height: constraints.maxHeight * 0.6,
+                      child: Image.asset(
+                        'assets/images/waiting.png',
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  ],
+                );
+              },
             )
           : ListView.builder(
               itemBuilder: (context, index) {
@@ -55,11 +60,18 @@ class TransactionList extends StatelessWidget {
                     ),
                     subtitle: Text(
                         DateFormat.yMMMd().format(transactions[index].date)),
-                    trailing: IconButton(
-                      onPressed: () => deleteTx(transactions[index].id),
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                    ),
+                    // Ekran genişliği 360 pixel'den yüksek ise,
+                    trailing: mediaQuery.size.width > 360
+                        ? FlatButton.icon(
+                            color: Theme.of(context).errorColor,
+                            onPressed: () => deleteTx(transactions[index].id),
+                            icon: Icon(Icons.delete),
+                            label: Text('Delete'))
+                        : IconButton(
+                            onPressed: () => deleteTx(transactions[index].id),
+                            icon: Icon(Icons.delete),
+                            color: Theme.of(context).errorColor,
+                          ),
                   ),
                 );
               },
